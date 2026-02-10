@@ -10,7 +10,7 @@ public class MainFrame extends JFrame {
     private DefaultTableModel tableModel;
 
     public MainFrame() {
-        setTitle("Облік комп'ютерів (Варіант 3)"); [cite: 12]
+        setTitle("Облік комп'ютерів (Варіант 3)");
         setSize(900, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -56,8 +56,8 @@ public class MainFrame extends JFrame {
         btnAdd.addActionListener(e -> {
             // Перевірка на порожні поля [cite: 110-121]
             if (txtName.getText().isEmpty() || txtCPU.getText().isEmpty() || txtFreq.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Помилка: Необхідно заповнити обов'язкові поля!", "Error", JOptionPane.ERROR_MESSAGE); [cite: 119]
-                return; [cite: 120]
+                JOptionPane.showMessageDialog(this, "Помилка: Необхідно заповнити обов'язкові поля!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             saveToMySQL();
             loadData(); // Оновити таблицю
@@ -67,10 +67,10 @@ public class MainFrame extends JFrame {
     }
 
     private Connection connect() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/ComputerShop";
+        String url = "jdbc:mysql://127.0.0.1:3306/Computer_1";
         String user = "root"; // замініть на ваш
-        String pass = "password"; // замініть на ваш
-        return DriverManager.getConnection(url, user, pass); [cite: 123-125]
+        String pass = ""; // замініть на ваш
+        return DriverManager.getConnection(url, user, pass);
     }
 
     private void saveToMySQL() {
@@ -86,17 +86,17 @@ public class MainFrame extends JFrame {
             pstmt.setString(6, txtSound.getText());
             pstmt.setInt(7, Integer.parseInt(txtHDD.getText()));
 
-            pstmt.executeUpdate(); [cite: 131]
-            JOptionPane.showMessageDialog(this, "Запис додано успішно!"); [cite: 132]
+            pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Запис додано успішно!");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Помилка БД: " + ex.getMessage(), "bad", JOptionPane.ERROR_MESSAGE); [cite: 135-136]
+            JOptionPane.showMessageDialog(this, "Помилка БД: " + ex.getMessage(), "bad", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void loadData() {
         tableModel.setRowCount(0);
         try (Connection con = connect(); Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM Computers")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM computers")) {
             while (rs.next()) {
                 tableModel.addRow(new Object[]{
                         rs.getInt("id"), rs.getString("name"), rs.getString("cpu_type"),
